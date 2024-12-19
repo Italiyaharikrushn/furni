@@ -21,39 +21,61 @@
 
 <body>
 	<!-- Start Header/Navigation -->
-	<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+	<header class="header-section">
+		<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
 
-		<div class="container">
-			<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
+			<div class="container">
+				<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
 
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-			<div class="collapse navbar-collapse" id="navbarsFurni">
-				<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-					<li class="nav-item ">
-						<a class="nav-link" href="{% url 'home_view' %}">Home</a>
-					</li>
-					<li class="active"><a class="nav-link" href="{% url 'shop' %}">Shop</a></li>
-					<li><a class="nav-link" href="about.html">About us</a></li>
-					<li><a class="nav-link" href="services.html">Services</a></li>
-					<li><a class="nav-link" href="blog.html">Blog</a></li>
-					<li><a class="nav-link" href="contact.html">Contact us</a></li>
-				</ul>
+				<div class="collapse navbar-collapse" id="navbarsFurni">
+					<!-- Main Navigation Links -->
+					<section class="navbar-links">
+						<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+							<li class="nav-item">
+								<a class="nav-link" href="{% url 'home_view' %}">Home</a>
+							</li>
+							<li class="active">
+								<a class="nav-link" href="{% url 'shop' %}">Shop</a>
+							</li>
+							<li>
+								<a class="nav-link" href="about.html">About us</a>
+							</li>
+							<li>
+								<a class="nav-link" href="services.html">Services</a>
+							</li>
+							<li>
+								<a class="nav-link" href="blog.html">Blog</a>
+							</li>
+							<li>
+								<a class="nav-link" href="contact.html">Contact us</a>
+							</li>
+						</ul>
+					</section>
 
-				<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-					<li><a class="nav-link" href="#"><img src="{% static 'images/user.svg' %}"></a></li>
-					<li><a class="nav-link" href="cart.html"><img src="{% static 'images/cart.svg' %}"></a></li>
-				</ul>
+					<!-- Call to Action Icons -->
+					<section class="navbar-cta">
+						<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+							<li>
+								<a class="nav-link" href="#"><img src="{% static 'images/user.svg' %}" alt="User icon"></a>
+							</li>
+							<li>
+								<a class="nav-link" href="cart.html"><img src="{% static 'images/cart.svg' %}" alt="Cart icon"></a>
+							</li>
+						</ul>
+					</section>
+				</div>
 			</div>
-		</div>
-			
-	</nav>
+
+		</nav>
+	</header>
 	<!-- End Header/Navigation -->
 
 	<!-- Start Hero Section -->
-	<div class="hero">
+	<section class="hero">
 		<div class="container">
 			<div class="row justify-content-between">
 				<div class="col-lg-5">
@@ -62,16 +84,15 @@
 					</div>
 				</div>
 				<div class="col-lg-7">
-
+					<!-- Add any content you want for the second column here -->
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 	<!-- End Hero Section -->
 
-
-
-	<div class="untree_co-section product-section before-footer-section">
+	<!-- Start Product Section -->
+	<section class="untree_co-section product-section before-footer-section">
 		<div class="container">
 			<div class="row">
 				<!-- Start Column 1 -->
@@ -89,23 +110,23 @@
 					</a>
 				</div>
 				{% empty %}
-                    <p>No products available.</p>
-                {% endfor %}
+					<p>No products available.</p>
+				{% endfor %}
 				<!-- End Column 1 -->
 			</div>
 		</div>
-	</div>
-
+	</section>
+	<!-- End Product Section -->
 
 	<!-- Start Footer Section -->
 	<footer class="footer-section">
 		<div class="container relative">
 
-			<div class="sofa-img">
+			<section class="sofa-img">
 				<img src="{% static 'images/sofa.png' %}" alt="Image" class="img-fluid">
-			</div>
+			</section>
 
-			<div class="row">
+			<section class="row">
 				<div class="col-lg-8">
 					<div class="subscription-form">
 						<h3 class="d-flex align-items-center"><span class="me-1"><img src="images/envelope-outline.svg"
@@ -127,9 +148,9 @@
 
 					</div>
 				</div>
-			</div>
+			</section>
 
-			<div class="row g-5 mb-5">
+			<section class="row g-5 mb-5">
 				<div class="col-lg-4">
 					<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
 					<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus
@@ -181,10 +202,9 @@
 						</div>
 					</div>
 				</div>
+			</section>
 
-			</div>
-
-			<div class="border-top copyright">
+			<section class="border-top copyright">
 				<div class="row pt-4">
 					<div class="col-lg-6">
 						<p class="mb-2 text-center text-lg-start">Copyright &copy;
@@ -203,12 +223,11 @@
 					</div>
 
 				</div>
-			</div>
+			</section>
 
 		</div>
 	</footer>
 	<!-- End Footer Section -->
-
 
 	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 	<script src="{% static 'js/tiny-slider.js' %}"></script>

@@ -22,73 +22,71 @@
 <body>
 
 	<!-- Start Header/Navigation -->
-	<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+	<section aria-labelledby="furni-navigation">
+		<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
 
-		<div class="container">
-			<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
+			<div class="container">
+				<a class="navbar-brand" href="index.html" id="furni-navigation">Furni<span>.</span></a>
 
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-				aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+					aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-			<div class="collapse navbar-collapse" id="navbarsFurni">
-				<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-					<li class="nav-item">
-						<a class="nav-link" href="index.html">Home</a>
-					</li>
-					<li><a class="nav-link" href="shop.html">Shop</a></li>
-					<li><a class="nav-link" href="about.html">About us</a></li>
-					<li><a class="nav-link" href="services.html">Services</a></li>
-					<li><a class="nav-link" href="blog.html">Blog</a></li>
-					<li class="active"><a class="nav-link" href="contact.html">Contact us</a></li>
-				</ul>
+				<div class="collapse navbar-collapse" id="navbarsFurni">
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+						<li class="nav-item">
+							<a class="nav-link" href="index.html">Home</a>
+						</li>
+						<li><a class="nav-link" href="shop.html">Shop</a></li>
+						<li><a class="nav-link" href="about.html">About us</a></li>
+						<li><a class="nav-link" href="services.html">Services</a></li>
+						<li><a class="nav-link" href="blog.html">Blog</a></li>
+						<li class="active"><a class="nav-link" href="contact.html">Contact us</a></li>
+					</ul>
 
-				<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-					<li><a class="nav-link" href="#"><img src="images/user.svg"></a></li>
-					<li><a class="nav-link" href="cart.html"><img src="images/cart.svg"></a></li>
-				</ul>
+					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+						<li><a class="nav-link" href="#"><img src="images/user.svg" alt="User Icon"></a></li>
+						<li><a class="nav-link" href="cart.html"><img src="images/cart.svg" alt="Shopping Cart Icon"></a></li>
+					</ul>
+				</div>
 			</div>
-		</div>
 
-	</nav>
+		</nav>
+	</section>
 	<!-- End Header/Navigation -->
 
 	<!-- Start Hero Section -->
-	<div class="hero">
-		<div class="container">
-			<div class="row justify-content-between">
-				<div class="col-lg-5">
-					<div class="intro-excerpt">
-						<h1>Contact</h1>
-						<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
-							vulputate velit imperdiet dolor tempor tristique.</p>
-						<p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#"
-								class="btn btn-white-outline">Explore</a></p>
+	<section aria-labelledby="hero-section">
+		<div class="hero">
+			<div class="container">
+				<div class="row justify-content-between">
+					<div class="col-lg-5">
+						<div class="intro-excerpt">
+							<h1 id="hero-section">Contact</h1>
+							<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
+								vulputate velit imperdiet dolor tempor tristique.</p>
+							<p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#"
+									class="btn btn-white-outline">Explore</a></p>
+						</div>
 					</div>
-				</div>
-				<div class="col-lg-7">
-					<div class="hero-img-wrap">
-						<img src="images/couch.png" class="img-fluid">
+					<div class="col-lg-7">
+						<div class="hero-img-wrap">
+							<img src="images/couch.png" class="img-fluid" alt="Couch Image">
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 	<!-- End Hero Section -->
 
-
-	<!-- Start Contact Form -->
-	<div class="untree_co-section">
+	<!-- Start Contact Form Section -->
+	<section class="contact-form-section">
 		<div class="container">
-
 			<div class="block">
 				<div class="row justify-content-center">
-
-
 					<div class="col-md-8 col-lg-8 pb-4">
-
-
 						<div class="row mb-5">
 							<div class="col-lg-4">
 								<div class="service no-shadow align-items-center link horizontal d-flex active"
@@ -166,36 +164,28 @@
 
 							<button type="submit" class="btn btn-primary-hover-outline">Send Message</button>
 						</form>
-
 					</div>
-
 				</div>
-
 			</div>
-
 		</div>
-
-
-	</div>
-	</div>
-
-	<!-- End Contact Form -->
-
-
+	</section>
+	<!-- End Contact Form Section -->
 
 	<!-- Start Footer Section -->
 	<footer class="footer-section">
 		<div class="container relative">
 
-			<div class="sofa-img">
+			<section class="sofa-img">
 				<img src="images/sofa.png" alt="Image" class="img-fluid">
-			</div>
+			</section>
 
-			<div class="row">
+			<section class="row">
 				<div class="col-lg-8">
 					<div class="subscription-form">
-						<h3 class="d-flex align-items-center"><span class="me-1"><img src="images/envelope-outline.svg"
-									alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+						<h3 class="d-flex align-items-center">
+							<span class="me-1"><img src="images/envelope-outline.svg" alt="Image" class="img-fluid"></span>
+							<span>Subscribe to Newsletter</span>
+						</h3>
 
 						<form action="#" class="row g-3">
 							<div class="col-auto">
@@ -213,9 +203,9 @@
 
 					</div>
 				</div>
-			</div>
+			</section>
 
-			<div class="row g-5 mb-5">
+			<section class="row g-5 mb-5">
 				<div class="col-lg-4">
 					<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
 					<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus
@@ -268,15 +258,15 @@
 					</div>
 				</div>
 
-			</div>
+			</section>
 
-			<div class="border-top copyright">
+			<section class="border-top copyright">
 				<div class="row pt-4">
 					<div class="col-lg-6">
 						<p class="mb-2 text-center text-lg-start">Copyright &copy;
 							<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
 							Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a
-								hreff="https://themewagon.com">ThemeWagon</a>
+								href="https://themewagon.com">ThemeWagon</a>
 							<!-- License information: https://untree.co/license/ -->
 						</p>
 					</div>
@@ -289,12 +279,11 @@
 					</div>
 
 				</div>
-			</div>
+			</section>
 
 		</div>
 	</footer>
 	<!-- End Footer Section -->
-
 
 	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 	<script src="{% static 'js/tiny-slider.js' %}"></script>
