@@ -314,9 +314,11 @@ a.more {
   padding-bottom: 50px;
   cursor: pointer;
 }
-.product-item .product-thumbnail{
-  height:400px;
+
+.product-item .product-thumbnail {
+  height: 400px;
 }
+
 .product-section .product-item .product-thumbnail {
   margin-bottom: 30px;
   position: relative;
