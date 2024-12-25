@@ -27,7 +27,7 @@
 			arial-label="Furni navigation bar">
 
 			<div class="container">
-				<a class="navbar-brand" href="{% url 'ecom:home_view' %}">Furni<span>.</span></a>
+				<a class="navbar-brand" href="{% url 'home_view' %}">Furni<span>.</span></a>
 
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
 					aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,11 +37,11 @@
 				<div class="collapse navbar-collapse" id="navbarsFurni">
 					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
 						<li class="nav-item">
-							<a class="nav-link" href="{% url 'ecom:home_view' %}">Home</a>
+							<a class="nav-link" href="{% url 'home_view' %}">Home</a>
 						</li>
-						<li><a class="nav-link" href="{% url 'ecom:shop' %}">Shop</a></li>
-						<li><a class="nav-link" href="{% url 'ecom:about_view' %}">About us</a></li>
-						<li><a class="nav-link" href="{% url 'ecom:contact' %}">Contact us</a></li>
+						<li><a class="nav-link" href="{% url 'shop' %}">Shop</a></li>
+						<li><a class="nav-link" href="{% url 'about_view' %}">About us</a></li>
+						<li><a class="nav-link" href="{% url 'contact' %}">Contact us</a></li>
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
@@ -52,12 +52,12 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li><a class="dropdown-item" href="#">Setting</a></li>
-									<li><a class="dropdown-item" href="{% url 'ecom:logout' %}"  method="get">Logout</a></li>
+									<li><a class="dropdown-item" href="{% url 'logout' %}"  method="get">Logout</a></li>
 								</ul>
 							</li>
 						{% else %}
 							<li class="nav-item">
-								<a class="nav-link" href="{% url 'ecom:login' %}" title="Login">
+								<a class="nav-link" href="{% url 'login' %}" title="Login">
 									<img src="{% static 'images/login.svg' %}" alt="Login" class="icon" style="width: 24px; height: 24px;">
 								</a>
 							</li>
@@ -65,7 +65,7 @@
 						
 						<!-- Cart Icon -->
 						<li class="nav-item icon">
-							<a class="nav-link" href="{% url 'ecom:cart_view' %}" title="Cart">
+							<a class="nav-link" href="{% url 'cart_view' %}" title="Cart">
 								<img src="{% static 'images/cart.svg' %}" alt="Cart" class="icon">
 							</a>
 						</li>

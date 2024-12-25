@@ -2,8 +2,6 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
-app_name = 'ecom'
 urlpatterns = [
     path('', views.home_view, name='home_view'),
     path('register/', views.register, name='register'),
