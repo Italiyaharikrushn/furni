@@ -133,20 +133,17 @@ def about_view(request):
     about = About.objects.first()
     return render(request, "product_details/about.html", {"about": about})
 
-
+# Cart: View Product to Cart
 @never_cache_custom
 @user_login_required
 def get_cart(request):
-    # Get the user from the session
     user_id = request.session.get("user_id")
     if not user_id:
-        return redirect("login")  # Redirect to login if no user_id in session
+        return redirect("login")
 
-    # Fetch user and cart from the database
     user = get_object_or_404(User, id=user_id)
     cart, created = Cart.objects.get_or_create(user=user)
 
-    # Create a list of cart items with their details, including total price
     cart_items = [
         {
             "product": item.product.product_name,
@@ -173,7 +170,6 @@ def get_cart(request):
 def add_to_cart(request):
     if request.method == "POST":
         try:
-            # Log the raw body of the request
             print("Request Body:", request.POST)
 
             user_id = request.session.get("user_id")
