@@ -7,6 +7,7 @@ from .utils import never_cache_custom, user, user_login_required
 from django.urls import reverse
 from django.http import JsonResponse
 import json
+from django.http import HttpResponse
 
 
 # This function handles the user register process
@@ -133,6 +134,7 @@ def about_view(request):
     about = About.objects.first()
     return render(request, "product_details/about.html", {"about": about})
 
+
 # Cart: View Product to Cart
 @never_cache_custom
 @user_login_required
@@ -146,6 +148,7 @@ def get_cart(request):
 
     cart_items = [
         {
+            "id": item.id,  # Add item id to uniquely identify it
             "product": item.product.product_name,
             "quantity": item.quantity,
             "price": float(item.product.price),
@@ -154,15 +157,18 @@ def get_cart(request):
         for item in cart.cart_items.all()
     ]
 
+    total_price = sum(item["total_price"] for item in cart_items)
+
     return render(
         request,
         "product_details/cart.html",
         {
             "cart": cart,
             "cart_items": cart_items,
-            "total_price": sum(item['total_price'] for item in cart_items),
-        }
+            "total_price": total_price,
+        },
     )
+
 
 # Cart: Add Product to Cart
 @never_cache_custom
@@ -185,13 +191,47 @@ def add_to_cart(request):
             quantity = request.POST.get("quantity", 1)
             product = get_object_or_404(Product, id=product_id)
             cart, created = Cart.objects.get_or_create(user=user)
-            cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+            cart_item, created = CartItem.objects.get_or_create(
+                cart=cart, product=product
+            )
             cart_item.quantity += int(quantity)
             cart_item.save()
 
-            return redirect('cart_view')
+            return redirect("cart_view")
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     else:
         return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+# Cart: update Product to Cart
+@never_cache_custom
+@user_login_required
+def update_cart(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        item_id = data["item_id"]
+        quantity = data["quantity"]
+
+        cart_item = CartItem.objects.get(id=item_id)
+        cart_item.quantity = quantity
+        cart_item.save()
+
+        total_price = cart_item.product.price * cart_item.quantity
+        cart_item.total_price = total_price
+        cart_item.save()
+
+        cart = cart_item.cart
+        cart.total_price = sum(
+            item.product.price * item.quantity for item in cart.cart_items.all()
+        )
+        cart.save()
+
+        return JsonResponse({
+            'success': True,
+            'item_total_price': total_price,
+            'cart_total_price': cart.total_price,
+        })
+
+    return JsonResponse({'success': False, 'error': 'Invalid method'})

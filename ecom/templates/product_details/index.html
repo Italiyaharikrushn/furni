@@ -18,6 +18,21 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
+
+	<style>
+		.user-initial {
+			display: inline-block;
+			width: 32px;
+			height: 32px;
+			background-color: #f8f9fa;
+			color: #343a40;
+			border-radius: 50%;
+			text-align: center;
+			line-height: 32px;
+			font-weight: bold;
+			font-size: 14px;
+		}
+	</style>
 </head>
 
 <body>
@@ -56,11 +71,11 @@
 						{% if request.session.user_id %}
 						<li class="nav-item dropdown">
 							<a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								<img src="{% static 'images/user.svg' %}">
+								<img src="{% static 'images/user.svg' %}" alt="User">
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">Setting</a></li>
-								<li><a class="dropdown-item" href="{% url 'logout' %}" method="get">Logout</a></li>
+								<li><a class="dropdown-item" href="#">Settings</a></li>
+								<li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
 							</ul>
 						</li>
 						{% else %}
@@ -71,6 +86,7 @@
 							</a>
 						</li>
 						{% endif %}
+
 
 						<!-- Cart Icon -->
 						<li class="nav-item icon">
@@ -84,6 +100,7 @@
 		</nav>
 	</header>
 	<!-- End Header/Navigation -->
+
 
 	<!-- Start Hero Section -->
 	<section class="hero">

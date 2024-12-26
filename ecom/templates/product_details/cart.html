@@ -17,6 +17,39 @@
 	<link href="{% static 'css/tiny-slider.css' %}" rel="stylesheet">
 	<link href="{% static 'css/style.css' %}" rel="stylesheet">
 	<title>Furni - Furniture and Interior Design</title>
+	<style>
+		.cart-section {
+			margin-top: 6%;
+		}
+
+		.cart-heading {
+			margin-bottom: 20px;
+			text-align: center;
+			font-size: 24px;
+			font-weight: bold;
+		}
+
+		.cart-table th,
+		.cart-table td {
+			text-align: center;
+			vertical-align: middle;
+		}
+
+		.product-image {
+			max-height: 130px;
+			width: auto;
+			display: block;
+			margin: auto;
+		}
+
+		.total-row {
+			font-weight: bold;
+		}
+
+		.cart-actions .btn {
+			margin: 5px;
+		}
+	</style>
 </head>
 
 <body>
@@ -82,64 +115,71 @@
 
 	<!-- Start Cart Section -->
 	{% block content %}
-	<div class="container">
-		<div class="row" style="margin-top: 6%">
-			<h2>Your Shopping Cart</h2>
-			<table class="table table-striped table-hover">
-				<thead>
-					<tr>
-						<!-- <th>Image</th> -->
-						<th>Product</th>
-						<th>Quantity</th>
-						<th>Unit Price</th>
-						<th>Total</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- {% for item in cart.cart_items.all %}
-					<tr>
-						<td>
-							<img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}"
-								style="height: 130px; width: auto">
-						</td>
-						<td>{{ item.product.product_name }}</td>
-						<td>{{ item.quantity }}</td>
-						<td>₹{{ item.product.price }}</td>
-						<td>₹{{ item.product.total_price }}</td>
-					</tr>
-					{% endfor %} -->
+	<div class="container cart-section">
+		<div class="row" style="margin-top: 6%;">
+			<h2 class="cart-heading">Your Shopping Cart</h2>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover cart-table">
+					<thead>
+						<tr>
+							<th>Image</th>
+							<th>Product</th>
+							<th>Quantity</th>
+							<th>Unit Price</th>
+							<th>Total</th>
+							<th>Remove</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in cart.cart_items.all %}
+						<tr>
+							<!-- Image Column -->
+							<td>
+								<img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}"
+									class="product-image">
+							</td>
 
-					{% for item in cart_items %}
-                    <tr>
-                        <!-- <td>
-                            <img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}"
-                                 style="height: 130px; width: auto">
-                        </td> -->
-                        <td>{{ item.product }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>₹{{ item.price }}</td>
-                        <td>₹{{ item.total_price }}</td>
-                    </tr>
-                    {% endfor %}
+							<!-- Product Name -->
+							<td>{{ item.product.product_name }}</td>
 
-				</tbody>
-			</table>
+							<!-- Quantity Buttons -->
+							<td>
+								<button class="btn decrease" type="button" data-item-id="{{ item.id }}">-</button>
+								<span class="quantity" id="quantity-{{ item.id }}">{{ item.quantity }}</span>
+								<button class="btn increase" type="button" data-item-id="{{ item.id }}">+</button>
+							</td>
 
-			<!-- Display the total price of the cart -->
-			<div class="text-right">
-				<h4><b>Total Price: ₹{{ cart.total_price }}</b></h4>
+							<!-- Unit Price -->
+							<td>₹{{ item.product.price }}</td>
+
+							<!-- Total Price -->
+							<td id="total-price-{{ item.id }}">₹{{ item.total_price }}</td>
+
+							<!-- Remove Button -->
+							<td>
+								<button class="btn btn-danger remove-item" data-item-id="{{ item.id }}">Remove</button>
+							</td>
+						</tr>
+						{% endfor %}
+
+						<!-- Total Price Row -->
+						<tr class="total-row">
+							<td colspan="4" class="text-right">Total Price:</td>
+							<td id="cart-total-price">₹{{ total_price }}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 
-			<!-- Buttons for updating or continuing shopping -->
-			<div class="text-right">
-				<a href="#" class="btn btn-default">Update Cart</a>
+			<!-- Cart Actions -->
+			<div class="text-right cart-actions">
 				<a href="{% url 'shop' %}" class="btn btn-default">Continue Shopping</a>
 			</div>
 		</div>
 	</div>
 	{% endblock %}
-
 	<!-- End Cart Section -->
+
 
 	<!-- Start Footer Section -->
 	<section class="footer-section">
@@ -201,6 +241,46 @@
 	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 	<script src="{% static 'js/tiny-slider.js' %}"></script>
 	<script src="{% static 'js/custom.js' %}"></script>
+
+	<script>
+		document.querySelectorAll('.decrease, .increase').forEach(function (button) {
+			button.addEventListener('click', function () {
+				const itemId = this.getAttribute('data-item-id');
+				const quantityElement = document.getElementById('quantity-' + itemId);
+				const totalPriceElement = document.getElementById('total-price-' + itemId);
+				let currentQuantity = parseInt(quantityElement.innerText);
+
+				if (this.classList.contains('decrease') && currentQuantity > 1) {
+					currentQuantity--;
+				} else if (this.classList.contains('increase')) {
+					currentQuantity++;
+				}
+
+				quantityElement.innerText = currentQuantity;
+
+				fetch('/update-cart/', {
+					method: 'POST',
+					body: JSON.stringify({ item_id: itemId, quantity: currentQuantity }),
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': '{{ csrf_token }}'
+					}
+				}).then(response => response.json())
+					.then(data => {
+						if (data.success) {
+
+							totalPriceElement.innerText = `₹${data.item_total_price}`;
+							document.getElementById('cart-total-price').innerText = `₹${data.cart_total_price}`;
+						} else {
+							console.error('Failed to update cart');
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+					});
+			});
+		});
+	</script>
 </body>
 
 </html>
