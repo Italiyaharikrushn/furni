@@ -7,8 +7,6 @@ from .utils import never_cache_custom, user, user_login_required
 from django.urls import reverse
 from django.http import JsonResponse
 import json
-from django.http import HttpResponse
-
 
 # This function handles the user register process
 @never_cache_custom
@@ -41,7 +39,6 @@ def register(request):
 
     return render(request, "product_details/register.html")
 
-
 # This function handles the user login process
 @never_cache_custom
 @user
@@ -62,19 +59,16 @@ def login(request):
 
     return render(request, "product_details/login.html")
 
-
 # This function handles the user logout process
 def logout(request):
     request.session.flush()
     return redirect("home_view")
-
 
 # This function handles the home page
 @never_cache_custom
 def home_view(request):
     products = Product.objects.all()
     return render(request, "product_details/index.html", {"products": products})
-
 
 # This function handles the add_Product page
 @never_cache_custom
@@ -99,13 +93,11 @@ def add_product(request):
 
     return render(request, "product_details/add_product.html")
 
-
 # This function handles the shop_view page
 @never_cache_custom
 def shop_view(request):
     products = Product.objects.all()
     return render(request, "product_details/shop.html", {"products": products})
-
 
 @never_cache_custom
 @user_login_required
@@ -128,12 +120,10 @@ def contact(request):
 
     return render(request, "product_details/contact.html")
 
-
 @never_cache_custom
 def about_view(request):
     about = About.objects.first()
     return render(request, "product_details/about.html", {"about": about})
-
 
 # Cart: View Product to Cart
 @never_cache_custom
@@ -169,7 +159,6 @@ def get_cart(request):
         },
     )
 
-
 # Cart: Add Product to Cart
 @never_cache_custom
 @user_login_required
@@ -204,7 +193,6 @@ def add_to_cart(request):
     else:
         return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
 # Cart: update Product to Cart
 @never_cache_custom
 @user_login_required
@@ -235,3 +223,30 @@ def update_cart(request):
         })
 
     return JsonResponse({'success': False, 'error': 'Invalid method'})
+
+@never_cache_custom
+@user_login_required
+def remove_cart(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            item_id = data.get("item_id")
+
+            if not item_id:
+                return JsonResponse({"error": "Item ID is required"}, status=400)
+
+            cart_item = get_object_or_404(CartItem, id=item_id)
+            cart = cart_item.cart
+            cart_item.delete()
+
+            total_price = sum(item.product.price * item.quantity for item in cart.cart_items.all())
+
+            return JsonResponse({
+                'success': True,
+                'cart_total_price': total_price
+            })
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    
+    return JsonResponse({"error": "Invalid request method"}, status=405)

@@ -133,36 +133,23 @@
 					<tbody>
 						{% for item in cart.cart_items.all %}
 						<tr>
-							<!-- Image Column -->
 							<td>
 								<img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}"
 									class="product-image">
 							</td>
-
-							<!-- Product Name -->
 							<td>{{ item.product.product_name }}</td>
-
-							<!-- Quantity Buttons -->
 							<td>
 								<button class="btn decrease" type="button" data-item-id="{{ item.id }}">-</button>
 								<span class="quantity" id="quantity-{{ item.id }}">{{ item.quantity }}</span>
 								<button class="btn increase" type="button" data-item-id="{{ item.id }}">+</button>
 							</td>
-
-							<!-- Unit Price -->
 							<td>₹{{ item.product.price }}</td>
-
-							<!-- Total Price -->
 							<td id="total-price-{{ item.id }}">₹{{ item.total_price }}</td>
-
-							<!-- Remove Button -->
 							<td>
 								<button class="btn btn-danger remove-item" data-item-id="{{ item.id }}">Remove</button>
 							</td>
 						</tr>
 						{% endfor %}
-
-						<!-- Total Price Row -->
 						<tr class="total-row">
 							<td colspan="4" class="text-right">Total Price:</td>
 							<td id="cart-total-price">₹{{ total_price }}</td>
@@ -170,8 +157,6 @@
 					</tbody>
 				</table>
 			</div>
-
-			<!-- Cart Actions -->
 			<div class="text-right cart-actions">
 				<a href="{% url 'shop' %}" class="btn btn-default">Continue Shopping</a>
 			</div>
@@ -265,10 +250,10 @@
 						'Content-Type': 'application/json',
 						'X-CSRFToken': '{{ csrf_token }}'
 					}
-				}).then(response => response.json())
+				})
+					.then(response => response.json())
 					.then(data => {
 						if (data.success) {
-
 							totalPriceElement.innerText = `₹${data.item_total_price}`;
 							document.getElementById('cart-total-price').innerText = `₹${data.cart_total_price}`;
 						} else {
@@ -280,7 +265,40 @@
 					});
 			});
 		});
+
+		// Handle item removal
+		document.querySelectorAll('.remove-item').forEach(button => {
+			button.addEventListener('click', function () {
+				const itemId = this.getAttribute('data-item-id');
+
+				fetch("{% url 'remove_cart' %}", {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': '{{ csrf_token }}',
+					},
+					body: JSON.stringify({ item_id: itemId })
+				})
+					.then(response => response.json())
+					.then(data => {
+						if (data.success) {
+							document.getElementById('cart-total-price').textContent = '₹' + data.cart_total_price;
+
+							const row = document.querySelector(`button[data-item-id='${itemId}']`).closest('tr');
+							row.remove();
+
+							alert('Item has been removed from your cart');
+						} else {
+							alert('Error removing item');
+						}
+					})
+					.catch(error => {
+						alert('An error occurred: ' + error);
+					});
+			});
+		});
 	</script>
+
 </body>
 
 </html>
