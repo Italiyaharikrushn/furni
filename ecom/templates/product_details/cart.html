@@ -31,8 +31,18 @@
             font-weight: bold;
         }
 
+        .cart-table {
+            width: 100%;
+            /* Ensure table takes full width */
+            border-collapse: collapse;
+            /* Remove spacing between table cells */
+        }
+
         .cart-table th,
         .cart-table td {
+            border: 1px solid #ddd;
+            /* Add table borders */
+            padding: 15px;
             text-align: center;
             vertical-align: middle;
         }
@@ -53,12 +63,40 @@
         }
 
         .cart-item-count {
-            width: 100px;
             height: 100px;
             background: rgb(77, 107, 107);
             border-radius: 50%;
             padding: 3px 6px;
             color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-outline-black {
+            color: rgb(116, 57, 57);
+            border-radius: 50px;
+            width: 40px;
+        }
+
+        .quantity-container {
+            display: flex;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .quantity-container button {
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 5px 10px;
+            background-color: #bdbebe;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .quantity-container .quantity {
+            width: 50%;
+            margin: 0 5px;
         }
     </style>
 </head>
@@ -155,9 +193,17 @@
                                 </td>
                                 <td>{{ item.product.product_name }}</td>
                                 <td>
-                                    <button class="btn decrease" type="button" data-item-id="{{ item.id }}">-</button>
-                                    <span class="quantity" id="quantity-{{ item.id }}">{{ item.quantity }}</span>
-                                    <button class="btn increase" type="button" data-item-id="{{ item.id }}">+</button>
+                                    <div class="input-group mb-3 quantity-container">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-black decrease" type="button"
+                                                data-item-id="{{ item.id }}">-</button>
+                                        </div>
+                                        <span class="quantity" id="quantity-{{ item.id }}">{{ item.quantity }}</span>
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-black increase" type="button"
+                                                data-item-id="{{ item.id }}">+</button>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>₹{{ item.product.price }}</td>
                                 <td id="total-price-{{ item.id }}">₹{{ item.total_price }}</td>
