@@ -17,24 +17,43 @@
 	<link href="{% static 'css/tiny-slider.css' %}" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
+	<style>
+		.cart-item-count {
+			width: 100px;
+            height: 100px;
+            background: rgb(77, 107, 107);
+            border-radius: 50%;
+            padding: 3px 6px;
+            color: white;
+		}
+	</style>
 </head>
 
 <body>
+
+	<!-- Messages Block -->
+	{% if messages %}
+	<div class="messages" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
+		{% for message in messages %}
+		<div class="alert alert-{{ message.tags }} text-center" role="alert">
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+
 	<!-- Start Header/Navigation -->
 	<header>
-		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark"
-			arial-label="Furni navigation bar">
+		<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
 			<div class="container">
 				<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
-
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
 					aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-
 				<div class="collapse navbar-collapse" id="navbarsFurni">
 					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-						<li class="nav-item ">
+						<li class="nav-item">
 							<a class="nav-link" href="{% url 'home_view' %}">Home</a>
 						</li>
 						<li class="active"><a class="nav-link" href="{% url 'shop' %}">Shop</a></li>
@@ -60,17 +79,17 @@
 							</a>
 						</li>
 						{% endif %}
-
 						<!-- Cart Icon with Item Count -->
 						<li class="nav-item icon">
 							<a class="nav-link" href="{% url 'cart_view' %}" title="Cart">
 								<img src="{% static 'images/cart.svg' %}" alt="Cart" class="icon">
+								{% if cart_item_count > 0 %}
+								<span class="cart-item-count">{{ cart_item_count }}</span>
+								{% endif %}
 							</a>
 						</li>
-					</ul>
 				</div>
 			</div>
-
 		</nav>
 	</header>
 	<!-- End Header/Navigation -->
@@ -79,7 +98,6 @@
 	<section class="untree_co-section product-section before-footer-section">
 		<div class="container">
 			<div class="row">
-				<!-- Start Column -->
 				{% for product in products %}
 				<div class="col-12 col-md-4 col-lg-3 mb-5">
 					<a class="product-item" href="#">
@@ -88,23 +106,18 @@
 						<h3 class="product-title">{{ product.product_name }}</h3>
 						<strong class="product-price">₹{{ product.price }}</strong>
 
-						<!-- Product Quantity and Add to Cart Button -->
 						<form action="{% url 'add_to_cart' %}" method="POST" class="add-to-cart-form">
 							{% csrf_token %}
 							<input type="hidden" name="product_id" value="{{ product.id }}">
-							<input type="number" name="quantity" value="1" min="1" class="form-control mb-2">
-							<button type="submit" class="btn btn-primary w-100">
-								<span class="icon-cart"><img src="{% static 'images/cart.svg' %}"
-										class="img-fluid"></span>
+							<button type="submit" class="btn btn-primary">
 								Add to Cart
 							</button>
 						</form>
 					</a>
 				</div>
 				{% empty %}
-				<p>No products available.</p>
+				<p class="text-center">No products available.</p>
 				{% endfor %}
-				<!-- End Column -->
 			</div>
 		</div>
 	</section>
@@ -123,7 +136,6 @@
 						<h3 class="d-flex align-items-center"><span class="me-1"><img
 									src="{% static 'images/envelope-outline.svg' %}" alt="Image"
 									class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
-
 						<form action="#" class="row g-3">
 							<div class="col-auto">
 								<input type="text" class="form-control" placeholder="Enter your name">
@@ -137,7 +149,6 @@
 								</button>
 							</div>
 						</form>
-
 					</div>
 				</div>
 			</section>
@@ -176,7 +187,6 @@
 					</div>
 				</div>
 			</section>
-
 		</div>
 	</footer>
 	<!-- End Footer Section -->
@@ -184,6 +194,17 @@
 	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 	<script src="{% static 'js/tiny-slider.js' %}"></script>
 	<script src="{% static 'js/custom.js' %}"></script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			setTimeout(function () {
+				var messages = document.querySelector('.messages');
+				if (messages) {
+					messages.style.display = 'none';
+				}
+			}, 3000);
+		});
+	</script>
 </body>
 
 </html>

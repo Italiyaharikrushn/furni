@@ -3,302 +3,287 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="author" content="Untree.co">
-	<link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Untree.co">
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
 
-	<meta name="description" content="" />
-	<meta name="keywords" content="bootstrap, bootstrap4, furniture, interior design" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap4, furniture, interior design" />
 
-	<!-- Bootstrap CSS -->
-	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-	<link href="{% static 'css/tiny-slider.css' %}" rel="stylesheet">
-	<link href="{% static 'css/style.css' %}" rel="stylesheet">
-	<title>Furni - Furniture and Interior Design</title>
-	<style>
-		.cart-section {
-			margin-top: 6%;
-		}
+    <!-- Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'css/tiny-slider.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
-		.cart-heading {
-			margin-bottom: 20px;
-			text-align: center;
-			font-size: 24px;
-			font-weight: bold;
-		}
+    <title>Furni - Furniture and Interior Design</title>
 
-		.cart-table th,
-		.cart-table td {
-			text-align: center;
-			vertical-align: middle;
-		}
+    <style>
+        .cart-section {
+            margin-top: 6%;
+        }
 
-		.product-image {
-			max-height: 130px;
-			width: auto;
-			display: block;
-			margin: auto;
-		}
+        .cart-heading {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-		.total-row {
-			font-weight: bold;
-		}
+        .cart-table th,
+        .cart-table td {
+            text-align: center;
+            vertical-align: middle;
+        }
 
-		.cart-actions .btn {
-			margin: 5px;
-		}
-	</style>
+        .product-image {
+            max-height: 130px;
+            width: auto;
+            display: block;
+            margin: auto;
+        }
+
+        .total-row {
+            font-weight: bold;
+        }
+
+        .cart-actions .btn {
+            margin: 5px;
+        }
+
+        .cart-item-count {
+            width: 100px;
+            height: 100px;
+            background: rgb(77, 107, 107);
+            border-radius: 50%;
+            padding: 3px 6px;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
-	<!-- Start Header/Navigation -->
-	<header>
-		<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
-			<div class="container">
-				<a class="navbar-brand" href="{% url 'home_view' %}">Furni<span>.</span></a>
+    <!-- Start Header/Navigation -->
+    <header>
+        <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home_view' %}">Furni<span>.</span></a>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-					aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                    aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-				<div class="collapse navbar-collapse" id="navbarsFurni">
-					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'home_view' %}">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'shop' %}">Shop</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'about_view' %}">About Us</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
-						</li>
-					</ul>
+                <div class="collapse navbar-collapse" id="navbarsFurni">
+                    <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home_view' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'shop' %}">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about_view' %}">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                        </li>
+                    </ul>
 
-					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						{% if request.session.user_id %}
-						<li class="nav-item dropdown">
-							<a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								<img src="{% static 'images/user.svg' %}" alt="User">
-							</a>
-							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">Settings</a></li>
-								<li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-							</ul>
-						</li>
-						{% else %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'login' %}" title="Login">
-								<img src="{% static 'images/login.svg' %}" alt="Login" class="icon"
-									style="width: 24px; height: 24px;">
-							</a>
-						</li>
-						{% endif %}
+                    <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                        {% if request.session.user_id %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{% static 'images/user.svg' %}" alt="User">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}" title="Login">
+                                <img src="{% static 'images/login.svg' %}" alt="Login" class="icon"
+                                    style="width: 24px; height: 24px;">
+                            </a>
+                        </li>
+                        {% endif %}
 
-						<!-- Cart Icon -->
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'cart_view' %}" title="Cart">
-								<img src="{% static 'images/cart.svg' %}" alt="Cart" class="icon">
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
-	<!-- End Header/Navigation -->
+                        <!-- Cart Icon -->
+                        <li class="nav-item icon">
+                            <a class="nav-link" href="{% url 'cart_view' %}" title="Cart">
+                                <img src="{% static 'images/cart.svg' %}" alt="Cart" class="icon">
+                                {% if item_count > 0 %}
+                                <span class="cart-item-count">{{ item_count }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- End Header/Navigation -->
 
-	<!-- Start Cart Section -->
-	{% block content %}
-	<div class="container cart-section">
-		<div class="row" style="margin-top: 6%;">
-			<h2 class="cart-heading">Your Shopping Cart</h2>
-			<div class="table-responsive">
-				<table class="table table-striped table-hover cart-table">
-					<thead>
-						<tr>
-							<th>Image</th>
-							<th>Product</th>
-							<th>Quantity</th>
-							<th>Unit Price</th>
-							<th>Total</th>
-							<th>Remove</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for item in cart.cart_items.all %}
-						<tr>
-							<td>
-								<img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}"
-									class="product-image">
-							</td>
-							<td>{{ item.product.product_name }}</td>
-							<td>
-								<button class="btn decrease" type="button" data-item-id="{{ item.id }}">-</button>
-								<span class="quantity" id="quantity-{{ item.id }}">{{ item.quantity }}</span>
-								<button class="btn increase" type="button" data-item-id="{{ item.id }}">+</button>
-							</td>
-							<td>₹{{ item.product.price }}</td>
-							<td id="total-price-{{ item.id }}">₹{{ item.total_price }}</td>
-							<td>
-								<button class="btn btn-danger remove-item" data-item-id="{{ item.id }}">Remove</button>
-							</td>
-						</tr>
-						{% endfor %}
-						<tr class="total-row">
-							<td colspan="4" class="text-right">Total Price:</td>
-							<td id="cart-total-price">₹{{ total_price }}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="text-right cart-actions">
-				<a href="{% url 'shop' %}" class="btn btn-default">Continue Shopping</a>
-			</div>
-		</div>
-	</div>
-	{% endblock %}
-	<!-- End Cart Section -->
+    <!-- Start Cart Section -->
+    {% block content %}
+    <div class="container cart-section">
+        <div class="row" style="margin-top: 6%;">
+            <h2 class="cart-heading">Your Shopping Cart</h2>
+            <div class="table-responsive">
+                <form method="POST" action="{% url 'remove_cart' %}">
+                    {% csrf_token %}
+                    <table class="table table-striped table-hover cart-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                                <th>Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart.cart_items.all %}
+                            <tr>
+                                <td>
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}"
+                                        class="product-image">
+                                </td>
+                                <td>{{ item.product.product_name }}</td>
+                                <td>
+                                    <button class="btn decrease" type="button" data-item-id="{{ item.id }}">-</button>
+                                    <span class="quantity" id="quantity-{{ item.id }}">{{ item.quantity }}</span>
+                                    <button class="btn increase" type="button" data-item-id="{{ item.id }}">+</button>
+                                </td>
+                                <td>₹{{ item.product.price }}</td>
+                                <td id="total-price-{{ item.id }}">₹{{ item.total_price }}</td>
+                                <td>
+                                    <!-- Hidden input for item ID to remove -->
+                                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                                    <button type="submit" class="btn btn-danger remove-item">Remove</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="total-row">
+                                <td colspan="4" class="text-right">Total Price:</td>
+                                <td id="cart-total-price">₹{{ total_price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="text-right cart-actions">
+                <a href="{% url 'shop' %}" class="btn btn-default">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    <!-- End Cart Section -->
 
+    <!-- Start Footer Section -->
+    <section class="footer-section">
+        <div class="container relative">
+            <div class="sofa-img">
+                <img src="{% static 'images/sofa.png' %}" alt="Sofa" class="img-fluid">
+            </div>
 
-	<!-- Start Footer Section -->
-	<section class="footer-section">
-		<div class="container relative">
-			<div class="sofa-img">
-				<img src="{% static 'images/sofa.png' %}" alt="Sofa" class="img-fluid">
-			</div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="subscription-form">
+                        <h3 class="d-flex align-items-center">
+                            <span class="me-1"><img src="{% static 'images/envelope-outline.svg' %}" alt="Envelope"
+                                    class="img-fluid"></span>
+                            <span>Subscribe to Newsletter</span>
+                        </h3>
 
-			<div class="row">
-				<div class="col-lg-8">
-					<div class="subscription-form">
-						<h3 class="d-flex align-items-center">
-							<span class="me-1"><img src="{% static 'images/envelope-outline.svg' %}" alt="Envelope"
-									class="img-fluid"></span>
-							<span>Subscribe to Newsletter</span>
-						</h3>
+                        <form action="#" class="row g-3">
+                            <div class="col-auto">
+                                <input type="text" class="form-control" placeholder="Enter your name" required>
+                            </div>
+                            <div class="col-auto">
+                                <input type="email" class="form-control" placeholder="Enter your email" required>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary">
+                                    <span class="fa fa-paper-plane"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-						<form action="#" class="row g-3">
-							<div class="col-auto">
-								<input type="text" class="form-control" placeholder="Enter your name" required>
-							</div>
-							<div class="col-auto">
-								<input type="email" class="form-control" placeholder="Enter your email" required>
-							</div>
-							<div class="col-auto">
-								<button class="btn btn-primary">
-									<span class="fa fa-paper-plane"></span>
-								</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+            <div class="border-top copyright">
+                <div class="row pt-4">
+                    <div class="col-lg-6">
+                        <p class="mb-2 text-center text-lg-start">
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
+                            Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a
+                                href="https://themewagon.com">ThemeWagon</a>
+                        </p>
+                    </div>
 
-			<div class="border-top copyright">
-				<div class="row pt-4">
-					<div class="col-lg-6">
-						<p class="mb-2 text-center text-lg-start">
-							Copyright &copy;
-							<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
-							Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a
-								href="https://themewagon.com">ThemeWagon</a>
-						</p>
-					</div>
+                    <div class="col-lg-6 text-center text-lg-end">
+                        <ul class="list-unstyled d-inline-flex ms-auto">
+                            <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Footer Section -->
 
-					<div class="col-lg-6 text-center text-lg-end">
-						<ul class="list-unstyled d-inline-flex ms-auto">
-							<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-							<li><a href="#">Privacy Policy</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Footer Section -->
+    <!-- JS Scripts -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/tiny-slider.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
 
-	<!-- JS Scripts -->
-	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-	<script src="{% static 'js/tiny-slider.js' %}"></script>
-	<script src="{% static 'js/custom.js' %}"></script>
+    <script>
+        document.querySelectorAll('.decrease, .increase').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const itemId = this.getAttribute('data-item-id');
+                const quantityElement = document.getElementById('quantity-' + itemId);
+                const totalPriceElement = document.getElementById('total-price-' + itemId);
+                let currentQuantity = parseInt(quantityElement.innerText);
 
-	<script>
-		document.querySelectorAll('.decrease, .increase').forEach(function (button) {
-			button.addEventListener('click', function () {
-				const itemId = this.getAttribute('data-item-id');
-				const quantityElement = document.getElementById('quantity-' + itemId);
-				const totalPriceElement = document.getElementById('total-price-' + itemId);
-				let currentQuantity = parseInt(quantityElement.innerText);
+                if (this.classList.contains('decrease') && currentQuantity > 1) {
+                    currentQuantity--;
+                } else if (this.classList.contains('increase')) {
+                    currentQuantity++;
+                }
 
-				if (this.classList.contains('decrease') && currentQuantity > 1) {
-					currentQuantity--;
-				} else if (this.classList.contains('increase')) {
-					currentQuantity++;
-				}
+                quantityElement.innerText = currentQuantity;
 
-				quantityElement.innerText = currentQuantity;
-
-				fetch('/update-cart/', {
-					method: 'POST',
-					body: JSON.stringify({ item_id: itemId, quantity: currentQuantity }),
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': '{{ csrf_token }}'
-					}
-				})
-					.then(response => response.json())
-					.then(data => {
-						if (data.success) {
-							totalPriceElement.innerText = `₹${data.item_total_price}`;
-							document.getElementById('cart-total-price').innerText = `₹${data.cart_total_price}`;
-						} else {
-							console.error('Failed to update cart');
-						}
-					})
-					.catch(error => {
-						console.error('Error:', error);
-					});
-			});
-		});
-
-		// Handle item removal
-		document.querySelectorAll('.remove-item').forEach(button => {
-			button.addEventListener('click', function () {
-				const itemId = this.getAttribute('data-item-id');
-
-				fetch("{% url 'remove_cart' %}", {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': '{{ csrf_token }}',
-					},
-					body: JSON.stringify({ item_id: itemId })
-				})
-					.then(response => response.json())
-					.then(data => {
-						if (data.success) {
-							document.getElementById('cart-total-price').textContent = '₹' + data.cart_total_price;
-
-							const row = document.querySelector(`button[data-item-id='${itemId}']`).closest('tr');
-							row.remove();
-
-							alert('Item has been removed from your cart');
-						} else {
-							alert('Error removing item');
-						}
-					})
-					.catch(error => {
-						alert('An error occurred: ' + error);
-					});
-			});
-		});
-	</script>
-
+                fetch('/update-cart/', {
+                    method: 'POST',
+                    body: JSON.stringify({ item_id: itemId, quantity: currentQuantity }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            totalPriceElement.innerText = `₹${data.item_total_price}`;
+                            document.getElementById('cart-total-price').innerText = `₹${data.cart_total_price}`;
+                        } else {
+                            console.error('Failed to update cart');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+    </script>
 </body>
 
 </html>

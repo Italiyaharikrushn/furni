@@ -1,11 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .models import Product, User, Contact, About, CartItem, Cart
 from django.contrib import messages
-from .utils import never_cache_custom
 from django.contrib.auth.hashers import make_password, check_password
 from .utils import never_cache_custom, user, user_login_required
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotAllowed
 import json
 
 # This function handles the user register process
@@ -51,7 +50,12 @@ def login(request):
             messages.error(request, "Both email and password are required.")
             return render(request, "product_details/login.html")
 
-        user = User.objects.get(email=email)
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "User not found.")
+            return render(request, "product_details/login.html")
+
         if check_password(password, user.password):
             request.session["user_id"] = user.id
             request.session["user_name"] = user.name
@@ -66,6 +70,7 @@ def logout(request):
 
 # This function handles the home page
 @never_cache_custom
+@user_login_required
 def home_view(request):
     products = Product.objects.all()
     return render(request, "product_details/index.html", {"products": products})
@@ -81,7 +86,6 @@ def add_product(request):
         stock = request.POST.get("stock")
         image = request.FILES.get("image")
 
-        # Create product
         Product.objects.create(
             product_name=product_name,
             description=description,
@@ -95,6 +99,7 @@ def add_product(request):
 
 # This function handles the shop_view page
 @never_cache_custom
+@user_login_required
 def shop_view(request):
     products = Product.objects.all()
     return render(request, "product_details/shop.html", {"products": products})
@@ -105,22 +110,14 @@ def contact(request):
     if request.method == "POST":
         name = request.POST.get("name", "").strip()
         email = request.POST.get("email", "").strip()
-        message = request.POST.get("message", "").strip()
 
-        if not (name and email and message):
-            messages.error(request, "All fields are required.")
+        if not (name and email):
             return render(request, "product_details/contact.html")
-
-        if Contact.objects.filter(email=email).exists():
-            messages.error(request, "This email has already been used.")
-        else:
-            Contact.objects.create(name=name, email=email, message=message)
-            messages.success(request, "Your message has been successfully sent.")
-            return redirect(reverse("contact"))
 
     return render(request, "product_details/contact.html")
 
 @never_cache_custom
+@user_login_required
 def about_view(request):
     about = About.objects.first()
     return render(request, "product_details/about.html", {"about": about})
@@ -133,12 +130,15 @@ def get_cart(request):
     if not user_id:
         return redirect("login")
 
-    user = get_object_or_404(User, id=user_id)
-    cart, created = Cart.objects.get_or_create(user=user)
+    try:
+        user = User.objects.get(id=user_id)
+        cart = Cart.objects.get(user=user)
+    except (User.DoesNotExist, Cart.DoesNotExist):
+        return redirect("home_view")
 
     cart_items = [
         {
-            "id": item.id,  # Add item id to uniquely identify it
+            "id": item.id,
             "product": item.product.product_name,
             "quantity": item.quantity,
             "price": float(item.product.price),
@@ -148,7 +148,6 @@ def get_cart(request):
     ]
 
     total_price = sum(item["total_price"] for item in cart_items)
-
     return render(
         request,
         "product_details/cart.html",
@@ -164,34 +163,30 @@ def get_cart(request):
 @user_login_required
 def add_to_cart(request):
     if request.method == "POST":
+        user_id = request.session.get("user_id")
+
         try:
-            print("Request Body:", request.POST)
-
-            user_id = request.session.get("user_id")
-            if not user_id:
-                return JsonResponse({"error": "User not logged in"}, status=400)
-
-            user = get_object_or_404(User, id=user_id)
-
+            user = User.objects.get(id=user_id)
             product_id = request.POST.get("product_id")
-            if not product_id:
-                return JsonResponse({"error": "Product ID is required"}, status=400)
-
-            quantity = request.POST.get("quantity", 1)
-            product = get_object_or_404(Product, id=product_id)
+            product = Product.objects.get(id=product_id)
+            
             cart, created = Cart.objects.get_or_create(user=user)
-            cart_item, created = CartItem.objects.get_or_create(
-                cart=cart, product=product
-            )
-            cart_item.quantity += int(quantity)
-            cart_item.save()
+        except (User.DoesNotExist, Product.DoesNotExist):
+            messages.error(request, "User or Product does not exist.")
+            return redirect("shop_view")
 
-            return redirect("cart_view")
+        quantity = request.POST.get("quantity", 1)
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+        cart_item.quantity += int(quantity)
+        cart_item.save()
 
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-    else:
-        return JsonResponse({"error": "Invalid request method"}, status=405)
+        messages.success(request, f"{product.product_name} was added to your cart successfully!")
+
+        products = Product.objects.all()
+
+        return render(request, "product_details/shop.html", {"products": products})
+
+    return redirect("shop_view")
 
 # Cart: update Product to Cart
 @never_cache_custom
@@ -201,52 +196,48 @@ def update_cart(request):
         data = json.loads(request.body)
         item_id = data["item_id"]
         quantity = data["quantity"]
-
         cart_item = CartItem.objects.get(id=item_id)
-        cart_item.quantity = quantity
-        cart_item.save()
 
-        total_price = cart_item.product.price * cart_item.quantity
-        cart_item.total_price = total_price
-        cart_item.save()
+        if quantity > 0:
+            cart_item.quantity = quantity
+            cart_item.total_price = cart_item.product.price * cart_item.quantity
+            cart_item.save()
 
-        cart = cart_item.cart
-        cart.total_price = sum(
-            item.product.price * item.quantity for item in cart.cart_items.all()
-        )
-        cart.save()
+            cart = cart_item.cart
+            cart.total_price = sum(item.product.price * item.quantity for item in cart.cart_items.all())
+            cart.save()
 
-        return JsonResponse({
-            'success': True,
-            'item_total_price': total_price,
-            'cart_total_price': cart.total_price,
-        })
+            return JsonResponse({
+                "success": True,
+                "item_total_price": cart_item.total_price,
+                "cart_total_price": cart.total_price,
+            })
 
-    return JsonResponse({'success': False, 'error': 'Invalid method'})
+        return redirect("cart_view")
 
+    return HttpResponseNotAllowed(["POST"])
+
+# Cart: remove Product to Cart
 @never_cache_custom
 @user_login_required
 def remove_cart(request):
     if request.method == "POST":
+        item_id = request.POST.get('item_id')
+
         try:
-            data = json.loads(request.body)
-            item_id = data.get("item_id")
+            cart_item = CartItem.objects.get(id=item_id)
+        except CartItem.DoesNotExist:
+            return redirect('cart_view')
 
-            if not item_id:
-                return JsonResponse({"error": "Item ID is required"}, status=400)
+        cart = cart_item.cart
+        cart_item.delete()
+        total_price = sum(
+            item.product.price * item.quantity for item in cart.cart_items.all()
+        )
 
-            cart_item = get_object_or_404(CartItem, id=item_id)
-            cart = cart_item.cart
-            cart_item.delete()
+        cart.total_price = total_price
+        cart.save()
 
-            total_price = sum(item.product.price * item.quantity for item in cart.cart_items.all())
+        return redirect('cart_view')
 
-            return JsonResponse({
-                'success': True,
-                'cart_total_price': total_price
-            })
-
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-    
-    return JsonResponse({"error": "Invalid request method"}, status=405)
+    return redirect('cart_view')
