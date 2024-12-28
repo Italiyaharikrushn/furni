@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.conf import settings
 
 def get_image_upload_to(instance, filename):
     ext = filename.split(".")[-1]
@@ -73,3 +74,17 @@ class CartItem(models.Model):
 
     def total_price(self):
         return self.quantity * self.product.price
+
+class Checkout(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="checkouts")
+    street_address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    pin_code = models.CharField(max_length=6)
+    country = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"Checkout for {self.user.name} - {self.id}"
+
+    def full_address(self):
+        return f"{self.street_address}, {self.city}, {self.state}, {self.pin_code}, {self.country}"

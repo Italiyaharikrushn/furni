@@ -168,7 +168,7 @@
     <!-- Start Cart Section -->
     {% block content %}
     <div class="container cart-section">
-        <div class="row" style="margin-top: 6%;">
+        <div class="row mt-5">
             <h2 class="cart-heading">Your Shopping Cart</h2>
             <div class="table-responsive">
                 <form method="POST" action="{% url 'remove_cart' %}">
@@ -199,7 +199,7 @@
                                                 data-item-id="{{ item.id }}">-</button>
                                         </div>
                                         <span class="quantity" id="quantity-{{ item.id }}">{{ item.quantity }}</span>
-                                        <div class="input-group-prepend">
+                                        <div class="input-group-append">
                                             <button class="btn btn-outline-black increase" type="button"
                                                 data-item-id="{{ item.id }}">+</button>
                                         </div>
@@ -208,15 +208,17 @@
                                 <td>₹{{ item.product.price }}</td>
                                 <td id="total-price-{{ item.id }}">₹{{ item.total_price }}</td>
                                 <td>
-                                    <!-- Hidden input for item ID to remove -->
                                     <input type="hidden" name="item_id" value="{{ item.id }}">
                                     <button type="submit" class="btn btn-danger remove-item">Remove</button>
                                 </td>
                             </tr>
                             {% endfor %}
                             <tr class="total-row">
-                                <td colspan="4" class="text-right">Total Price:</td>
+                                <td colspan="4" class="text-right font-weight-bold">Total Price:</td>
                                 <td id="cart-total-price">₹{{ total_price }}</td>
+                                <td>
+                                    <a href="{% url 'checkout' %}" class="btn btn-black">Checkout</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -227,8 +229,53 @@
             </div>
         </div>
     </div>
+
+    <!-- <div class="col-md-6 pl-5 cart-summary">
+        <div class="row justify-content-end">
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-12 text-right border-bottom mb-5">
+                        <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <span class="text-black">Subtotal</span>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <strong id="cart-subtotal-price" class="text-black">₹{{ total_price }}</strong>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <span class="text-black">Total Price</span>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <strong id="cart-total-price" class="text-black">₹{{ total_price }}</strong>
+                    </div>
+                </div>
+                
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <span class="text-black">Total</span>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <strong id="cart-total-price" class="text-black" aria-label="Cart Total Price">
+                            ₹{{ total_price }}
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="btn btn-black btn-lg py-3 btn-block">Proceed To Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
     {% endblock %}
-    <!-- End Cart Section -->
 
     <!-- Start Footer Section -->
     <section class="footer-section">

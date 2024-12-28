@@ -241,3 +241,6 @@ def remove_cart(request):
         return redirect('cart_view')
 
     return redirect('cart_view')
+
+def checkout(request):
+    return render('product_details/checkout.html')
