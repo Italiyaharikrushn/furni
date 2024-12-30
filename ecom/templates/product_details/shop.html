@@ -43,18 +43,6 @@
 </head>
 
 <body>
-
-	<!-- Messages Block -->
-	{% if messages %}
-	<div class="messages" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
-		{% for message in messages %}
-		<div class="alert alert-{{ message.tags }} text-center" role="alert">
-			{{ message }}
-		</div>
-		{% endfor %}
-	</div>
-	{% endif %}
-
 	<!-- Start Header/Navigation -->
 	<header>
 		<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
@@ -136,6 +124,17 @@
 		</div>
 	</section>
 	<!-- End Product Section -->
+
+	<!-- Messages Block -->
+	{% if messages %}
+	<div class="messages" style="position: fixed; bottom: 80px; left: 80%; z-index: 1000;">
+		{% for message in messages %}
+		<div class="alert alert-{{ message.tags }} text-center" role="alert">
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
 
 	<!-- Start Footer Section -->
 	<footer class="footer-section">

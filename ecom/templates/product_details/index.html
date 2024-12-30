@@ -40,18 +40,14 @@
 	<header>
 		<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
 			<div class="container">
-				<!-- Brand Name -->
 				<a class="navbar-brand" href="{% url 'home_view' %}">Furni<span>.</span></a>
 
-				<!-- Toggle Button for Mobile View -->
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
 					aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
-				<!-- Navigation Menu -->
 				<div class="collapse navbar-collapse" id="navbarsFurni">
-					<!-- Left Navigation Links -->
 					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
 						<li class="nav-item active">
 							<a class="nav-link" href="{% url 'home_view' %}">Home</a>
@@ -88,8 +84,6 @@
 						</li>
 						{% endif %}
 
-
-						<!-- Cart Icon -->
 						<li class="nav-item icon">
 							<a class="nav-link" href="{% url 'cart_view' %}" title="Cart">
 								<img src="{% static 'images/cart.svg' %}" alt="Cart" class="icon">
@@ -101,7 +95,6 @@
 		</nav>
 	</header>
 	<!-- End Header/Navigation -->
-
 
 	<!-- Start Hero Section -->
 	<section class="hero">
@@ -133,14 +126,12 @@
 		<div class="container">
 			<div class="row">
 
-				<!-- Start Column 1 -->
 				<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
 					<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
 					<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
 						vulputate velit imperdiet dolor tempor tristique.</p>
 					<p><a href="{% url 'shop' %}" class="btn">Explore</a></p>
 				</div>
-				<!-- End Column 1 -->
 
 				{% for product in products|slice:":3" %}
 				<div class="col-12 col-md-4 col-lg-3 mb-5">

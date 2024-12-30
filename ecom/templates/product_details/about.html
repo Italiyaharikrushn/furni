@@ -38,7 +38,6 @@
 	<!-- Start Header/Navigation -->
 	<header>
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-
 			<div class="container">
 				<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
 
@@ -77,7 +76,6 @@
 						</li>
 						{% endif %}
 						
-						<!-- Cart Icon -->
 						<li class="nav-item icon">
 							<a class="nav-link" href="{% url 'cart_view' %}" title="Cart">
 								<img src="{% static 'images/cart.svg' %}" alt="Cart" class="icon">
@@ -86,27 +84,23 @@
 					</ul>
 				</div>
 			</div>
-				
 		</nav>
 	</header>
-	<!-- End Header/Navigation -->  
+	<!-- End Header/Navigation -->
 
 	<!-- Start Hero Section -->
 	<section class="hero">
         <div class="container">
             <div class="row justify-content-between">
-                <!-- Left Column: Text Content -->
                 <div class="col-lg-5">
                     <div class="intro-excerpt">
                         <h1>About Us</h1>
-                        <!-- <p class="mb-4">{{ about.about_text }}</p> -->
                         <p>
                             <a href="" class="btn btn-secondary me-2">Shop Now</a>
                             <a href="#" class="btn btn-white-outline">Explore</a>
                         </p>
                     </div>
                 </div>
-                <!-- Right Column: Image -->
                 <div class="col-lg-7">
                     <div class="hero-img-wrap">
                         <!-- {% if about.image %}
@@ -126,7 +120,6 @@
 	<section class="why-choose-section">
 		<div class="container">
 		<div class="row justify-content-between align-items-center">
-			<!-- Left Column: Text Content -->
 			<div class="col-lg-6">
 			<h2 class="section-title">Why Choose Us</h2>
             <p class="mb-4">{{ about.about_text }}</p>
