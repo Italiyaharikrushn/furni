@@ -98,6 +98,19 @@
             width: 50%;
             margin: 0 5px;
         }
+
+        .user-initial {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background-color: #f8f9fa;
+            color: #343a40;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -130,10 +143,12 @@
                     </ul>
 
                     <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                        {% if request.session.user_id %}
+                        {% if request.session.user_name %}
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="{% static 'images/user.svg' %}" alt="User">
+                                <span class="user-initial">
+                                    {{ request.session.user_name|slice:":1" }}
+                                </span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -143,8 +158,7 @@
                         {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}" title="Login">
-                                <img src="{% static 'images/login.svg' %}" alt="Login" class="icon"
-                                    style="width: 24px; height: 24px;">
+                                <img src="{% static 'images/user.svg' %}">
                             </a>
                         </li>
                         {% endif %}
@@ -153,9 +167,6 @@
                         <li class="nav-item icon">
                             <a class="nav-link" href="{% url 'cart_view' %}" title="Cart">
                                 <img src="{% static 'images/cart.svg' %}" alt="Cart" class="icon">
-                                {% if item_count > 0 %}
-                                <span class="cart-item-count">{{ item_count }}</span>
-                                {% endif %}
                             </a>
                         </li>
                     </ul>
@@ -188,20 +199,17 @@
                             {% for item in cart.cart_items.all %}
                             <tr>
                                 <td>
-                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}"
-                                        class="product-image">
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}" class="product-image">
                                 </td>
                                 <td>{{ item.product.product_name }}</td>
                                 <td>
                                     <div class="input-group mb-3 quantity-container">
                                         <div class="input-group-prepend">
-                                            <button class="btn btn-outline-black decrease" type="button"
-                                                data-item-id="{{ item.id }}">-</button>
+                                            <button class="btn btn-outline-black decrease" type="button" data-item-id="{{ item.id }}">-</button>
                                         </div>
                                         <span class="quantity" id="quantity-{{ item.id }}">{{ item.quantity }}</span>
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-black increase" type="button"
-                                                data-item-id="{{ item.id }}">+</button>
+                                            <button class="btn btn-outline-black increase" type="button" data-item-id="{{ item.id }}">+</button>
                                         </div>
                                     </div>
                                 </td>
@@ -224,11 +232,12 @@
                     </table>
                 </form>
             </div>
-            <div class="text-right cart-actions">
+
+            <div class="text-right cart-actions mt-3">
                 <a href="{% url 'shop' %}" class="btn btn-default">Continue Shopping</a>
             </div>
         </div>
-    </div>
+    </div>    
 
     <!-- <div class="col-md-6 pl-5 cart-summary">
         <div class="row justify-content-end">

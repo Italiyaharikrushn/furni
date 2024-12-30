@@ -20,11 +20,24 @@
 	<style>
 		.cart-item-count {
 			width: 100px;
-            height: 100px;
-            background: rgb(77, 107, 107);
-            border-radius: 50%;
-            padding: 3px 6px;
-            color: white;
+			height: 100px;
+			background: rgb(77, 107, 107);
+			border-radius: 50%;
+			padding: 3px 6px;
+			color: white;
+		}
+
+		.user-initial {
+			display: inline-block;
+			width: 32px;
+			height: 32px;
+			background-color: #f8f9fa;
+			color: #343a40;
+			border-radius: 50%;
+			text-align: center;
+			line-height: 32px;
+			font-weight: bold;
+			font-size: 14px;
 		}
 	</style>
 </head>
@@ -61,21 +74,22 @@
 						<li><a class="nav-link" href="{% url 'contact' %}">Contact us</a></li>
 					</ul>
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						{% if request.session.user_id %}
+						{% if request.session.user_name %}
 						<li class="nav-item dropdown">
 							<a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								<img src="{% static 'images/user.svg' %}">
+								<span class="user-initial">
+									{{ request.session.user_name|slice:":1" }}
+								</span>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">Setting</a></li>
-								<li><a class="dropdown-item" href="{% url 'logout' %}" method="get">Logout</a></li>
+								<li><a class="dropdown-item" href="#">Settings</a></li>
+								<li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
 							</ul>
 						</li>
 						{% else %}
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'login' %}" title="Login">
-								<img src="{% static 'images/login.svg' %}" alt="Login" class="icon"
-									style="width: 24px; height: 24px;">
+								<img src="{% static 'images/user.svg' %}">
 							</a>
 						</li>
 						{% endif %}

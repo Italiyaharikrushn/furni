@@ -70,7 +70,6 @@ def logout(request):
 
 # This function handles the home page
 @never_cache_custom
-@user_login_required
 def home_view(request):
     products = Product.objects.all()
     return render(request, "product_details/index.html", {"products": products})
@@ -99,13 +98,11 @@ def add_product(request):
 
 # This function handles the shop_view page
 @never_cache_custom
-@user_login_required
 def shop_view(request):
     products = Product.objects.all()
     return render(request, "product_details/shop.html", {"products": products})
 
 @never_cache_custom
-@user_login_required
 def contact(request):
     if request.method == "POST":
         name = request.POST.get("name", "").strip()
@@ -117,7 +114,6 @@ def contact(request):
     return render(request, "product_details/contact.html")
 
 @never_cache_custom
-@user_login_required
 def about_view(request):
     about = About.objects.first()
     return render(request, "product_details/about.html", {"about": about})
