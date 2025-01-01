@@ -14,7 +14,7 @@ urlpatterns = [
     
     # Products
     path("add_product/", views.add_product, name="add_product"),
-    path("shop/", views.shop_view, name="shop"),
+    path("shop/", views.shop_view, name="shop_view"),
     
     # Contact
     path("contact/", views.contact, name="contact"),
