@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, User, Contact, About, CartItem, Cart
+from .models import Product, User, Contact, About, CartItem, Cart, Order, OrderItem, BillingAddress
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from .utils import never_cache_custom, user, user_login_required
@@ -245,11 +245,57 @@ def checkout(request):
     except (User.DoesNotExist, Cart.DoesNotExist):
         return redirect("home_view")
 
+    # Get or create the billing address
+    billing_address, created = BillingAddress.objects.get_or_create(user=user)
+
+    if request.method == "POST":
+        # Handle form submission for billing address and order creation
+        street_address = request.POST.get("street_address")
+        city = request.POST.get("city")
+        state = request.POST.get("state")
+        pin_code = request.POST.get("pin_code")
+        country = request.POST.get("country")
+        contact_number = request.POST.get("contact_number")
+
+        # Update or create billing address
+        billing_address.street_address = street_address
+        billing_address.city = city
+        billing_address.state = state
+        billing_address.pin_code = pin_code
+        billing_address.country = country
+        billing_address.contact_number = contact_number
+        billing_address.save()
+
+        # Create the order
+        order = Order.objects.create(user=user, total_price=cart.total_price())
+        for item in cart.cart_items.all():
+            OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
+
+        # Redirect to payment
+        return redirect("payment_view", order_id=order.id)
+
     return render(
         request,
         "product_details/checkout.html",
         {
             "cart": cart,
-            "total_price": cart.total_price,
+            "total_price": cart.total_price(),
+            "billing_address": billing_address,
         },
     )
+
+def payment_view(request, order_id):
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return redirect("home_view")
+
+    if request.method == "POST":
+        # Handle payment processing logic here
+        order.status = "Processing"
+        order.save()
+
+        # After successful payment, redirect to a success page
+        return redirect("order_success", order_id=order.id)
+
+    return render(request, "product_details/payment.html", {"order": order})
