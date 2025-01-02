@@ -114,7 +114,6 @@
     {% block content %}
     <section class="payment-section">
         <div class="container">
-            <h2 class="payment-heading">Payment for Order #{{ order.id }}</h2>
 
             <form method="POST">
                 {% csrf_token %}
