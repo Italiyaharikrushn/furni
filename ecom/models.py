@@ -89,20 +89,20 @@ class Checkout(models.Model):
         return f"{self.street_address}, {self.city}, {self.state}, {self.pin_code}, {self.country}"
 
 class Order(models.Model):
-    ORDER_STATUS_CHOICES = [
-        ("Pending", "Pending"),
-        ("Processing", "Processing"),
-        ("Shipped", "Shipped"),
-        ("Delivered", "Delivered"),
-        ("Cancelled", "Cancelled"),
-    ]
+    # ORDER_STATUS_CHOICES = [
+    #     ("Pending", "Pending"),
+    #     ("Processing", "Processing"),
+    #     ("Shipped", "Shipped"),
+    #     ("Delivered", "Delivered"),
+    #     ("Cancelled", "Cancelled"),
+    # ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(
-        max_length=20, choices=ORDER_STATUS_CHOICES, default="Pending"
-    )
+    # status = models.CharField(
+    #     max_length=20, choices=ORDER_STATUS_CHOICES, default="Pending"
+    # )
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def __str__(self):
@@ -128,6 +128,7 @@ class BillingAddress(models.Model):
     fullname = models.CharField(max_length=255)
     address = models.TextField()
     city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, blank=True, null=True)
     pincode = models.CharField(max_length=6)
     country = models.CharField(max_length=100)
     contact_number = models.CharField(max_length=14)
@@ -136,4 +137,4 @@ class BillingAddress(models.Model):
         return f"Billing Address for {self.fullname} ({self.user.name})"
 
     def full_address(self):
-        return f"{self.address}, {self.city}, {self.pincode}, {self.country}"
+        return f"{self.address}, {self.city}, {self.state}, {self.pincode}, {self.country}"

@@ -96,7 +96,6 @@ def add_product(request):
         price = request.POST.get("price")
         image = request.FILES.get("image")
 
-        # Create new product
         Product.objects.create(
             product_name=product_name,
             description=description,
@@ -126,7 +125,6 @@ def contact(request):
             messages.error(request, "All fields are required.")
             return render(request, "product_details/contact.html")
 
-        # Save contact message
         Contact.objects.create(name=name, email=email, message=message)
         messages.success(request, "Thank you for reaching out!")
         return redirect("home_view")
@@ -205,7 +203,6 @@ def update_cart(request):
         cart_item.quantity = quantity
         cart_item.save()
 
-        # Recalculate cart total
         cart = cart_item.cart
         cart.total_price = sum(
             item.product.price * item.quantity for item in cart.cart_items.all()
@@ -245,11 +242,10 @@ def checkout(request):
     except (User.DoesNotExist, Cart.DoesNotExist):
         return redirect("home_view")
 
-    # Get or create the billing address
     billing_address, created = BillingAddress.objects.get_or_create(user=user)
 
     if request.method == "POST":
-        # Handle form submission for billing address and order creation
+        fullname = request.POST.get("fullname")
         street_address = request.POST.get("street_address")
         city = request.POST.get("city")
         state = request.POST.get("state")
@@ -257,21 +253,19 @@ def checkout(request):
         country = request.POST.get("country")
         contact_number = request.POST.get("contact_number")
 
-        # Update or create billing address
-        billing_address.street_address = street_address
+        billing_address.fullname = fullname
+        billing_address.address = street_address
         billing_address.city = city
         billing_address.state = state
-        billing_address.pin_code = pin_code
+        billing_address.pincode = pin_code
         billing_address.country = country
         billing_address.contact_number = contact_number
         billing_address.save()
 
-        # Create the order
         order = Order.objects.create(user=user, total_price=cart.total_price())
         for item in cart.cart_items.all():
             OrderItem.objects.create(order=order, product=item.product, quantity=item.quantity)
 
-        # Redirect to payment
         return redirect("payment_view", order_id=order.id)
 
     return render(
@@ -291,11 +285,9 @@ def payment_view(request, order_id):
         return redirect("home_view")
 
     if request.method == "POST":
-        # Handle payment processing logic here
         order.status = "Processing"
         order.save()
 
-        # After successful payment, redirect to a success page
         return redirect("order_success", order_id=order.id)
 
     return render(request, "product_details/payment.html", {"order": order})
