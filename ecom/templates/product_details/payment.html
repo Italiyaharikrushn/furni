@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Untree.co">
     <link rel="shortcut icon" href="{% static 'favicon.png' %}">
-    <meta name="description" content="" />
-    <meta name="keywords" content="bootstrap, bootstrap4" />
+    <meta name="description" content="Furni Checkout Page" />
+    <meta name="keywords" content="furniture, checkout, bootstrap, template" />
 
     <!-- Bootstrap CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -20,19 +20,19 @@
     <title>Furni - Checkout</title>
 
     <style>
-        .user-initial {
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            background-color: #f8f9fa;
-            color: #343a40;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 32px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-    </style>
+		.user-initial {
+			display: inline-block;
+			width: 32px;
+			height: 32px;
+			background-color: #f8f9fa;
+			color: #343a40;
+			border-radius: 50%;
+			text-align: center;
+			line-height: 32px;
+			font-weight: bold;
+			font-size: 14px;
+		}
+	</style>
 </head>
 
 <body>
@@ -102,7 +102,7 @@
             <div class="row justify-content-between">
                 <div class="col-lg-5">
                     <div class="intro-excerpt">
-                        <h1>Checkout</h1>
+                        <h1>Payment</h1>
                     </div>
                 </div>
             </div>
@@ -113,8 +113,7 @@
     <!-- Start Billing Section -->
     {% block content %}
     <section class="payment-section">
-        <div class="container">
-
+        <div class="container my-4">
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -126,7 +125,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-black">Pay Now</button>
+                <button type="submit" class="btn btn-black my-4">Pay Now</button>
             </form>
         </div>
     </section>
@@ -144,7 +143,7 @@
                 <div class="col-lg-8">
                     <div class="subscription-form">
                         <h3 class="d-flex align-items-center"><span class="me-1"><img
-                                    src="{% static 'images/envelope-outline.svg' %}" alt="Image"
+                                    src="{% static 'images/envelope-outline.svg' %}" alt="Newsletter"
                                     class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
 
                         <form action="#" class="row g-3">
@@ -160,7 +159,6 @@
                                 </button>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
